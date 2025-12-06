@@ -2,8 +2,7 @@
 Identifying artistic periods using classical computer vision.
 
 # Overview
-A web-based image classifier that identifies whether a painting belongs to the **Baroque**, **Medieval**, or **Renaissance** era using **classical computer vision methods** (HOG features + SVM).  
-The model is deployed using **Streamlit**. Users can upload a painting image and instantly see:
+A web-based image classifier that identifies whether a painting belongs to the **Baroque**, **Medieval**, or **Renaissance** era using **classical computer vision methods** (HOG features + SVM). The model is deployed using **Streamlit**. Users can upload a painting image and instantly see:
 - Predicted painting era
 - Confidence score
 - Short description
