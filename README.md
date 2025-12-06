@@ -60,7 +60,7 @@ Deployment (Streamlit UI):
 
 # Installation
 1️⃣ Clone the repository:
-- git clone https://github.com/babytokki/painting-era-classifier.git
+- git clone https://github.com/babytokki/painting-era-classifier-svm.git
 - cd painting-era-classifier
 
 2️⃣ Install dependencies:
