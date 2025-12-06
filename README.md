@@ -44,6 +44,7 @@ A **Linear SVM** (`sklearn.svm.SVC`) trained with:
 
 ```python
 SVC(kernel="linear", probability=True)
+```
 
 Evaluation Metrics:
 - Accuracy
