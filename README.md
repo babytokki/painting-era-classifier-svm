@@ -38,7 +38,7 @@ Data Augmentation:
 - Horizontal flip
 - Brightness adjustment
 
-Feature Extraction:
+# Feature Extraction:
 Using **HOG (Histogram of Oriented Gradients)** from `skimage.feature.hog`:
 - `orientations=9`  
 - `pixels_per_cell=(8, 8)`  
