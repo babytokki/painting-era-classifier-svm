@@ -85,11 +85,7 @@ h1 {
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<h1 style='
-    text-align: center;
-    margin-top: 20px;
-    color: #D4AF37 !important;
-'>
+<h1 style='text-align: center; margin-top: 20px;'>
     Painting Era Classifier
 </h1>
 """, unsafe_allow_html=True)
@@ -103,7 +99,7 @@ def load_svm():
 svm_model = load_svm()
 
 
-# ---------------------------- Preprocessing (HOG) ----------------------------
+# ---------------------------- Feature Extraction ----------------------------
 IMG_SIZE = (128, 128)
 
 def extract_hog_features(img):
@@ -112,14 +108,29 @@ def extract_hog_features(img):
 
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
-    features = hog(
+    hog_feat = hog(
         gray,
         orientations=9,
         pixels_per_cell=(8, 8),
         cells_per_block=(2, 2),
         block_norm="L2-Hys"
     )
-    return features.reshape(1, -1)
+    return hog_feat.reshape(1, -1)
+
+
+def extract_color_features(img):
+    img = img.resize(IMG_SIZE)
+    img = np.array(img)
+
+    hist = cv2.calcHist(
+        [img],
+        channels=[0, 1, 2],
+        mask=None,
+        histSize=[8, 8, 8],
+        ranges=[0, 256, 0, 256, 0, 256]
+    )
+    cv2.normalize(hist, hist)
+    return hist.flatten().reshape(1, -1)
 
 
 # ---------------------------- Class Info ----------------------------
@@ -145,17 +156,18 @@ class_list = list(class_names.keys())
 uploaded_file = st.file_uploader("Upload a painting", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
-
     img = Image.open(uploaded_file).convert("RGB")
 
     # Image display
     st.markdown('<div class="uploaded-image-card">', unsafe_allow_html=True)
-    st.image(img, width='stretch')
+    st.image(img, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('<div class="uploaded-caption">Uploaded Image</div>', unsafe_allow_html=True)
 
-    # Extract HOG features
-    features = extract_hog_features(img)
+    # Feature extraction (HOG + Color)
+    hog_feat = extract_hog_features(img)
+    color_feat = extract_color_features(img)
+    features = np.concatenate([hog_feat, color_feat], axis=1)
 
     # Prediction
     probs = svm_model.predict_proba(features)[0]
@@ -199,4 +211,4 @@ if uploaded_file:
         .properties(height=300)
     )
 
-    st.altair_chart(chart, width='stretch')
+    st.altair_chart(chart, width="stretch")
