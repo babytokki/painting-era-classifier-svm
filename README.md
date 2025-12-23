@@ -50,7 +50,6 @@ Using **Color Histogram (RGB)** from opencv:
 - histSize = [8, 8, 8]
 - Histogram normalization applied
 
-**Final feature vector**:
 Concatenating HOG features and color histogram features that combines:
 - Shape & texture (HOG)
 - Color & tone (RGB histogram)
