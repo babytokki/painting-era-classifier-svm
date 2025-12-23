@@ -55,7 +55,7 @@ Concatenating HOG features and color histogram features that combines:
 - Shape & texture (HOG)
 - Color & tone (RGB histogram)
 
-Classifier:
+# Classifier:
 A **Linear SVM** (`sklearn.svm.SVC`) trained with:
 
 ```python
