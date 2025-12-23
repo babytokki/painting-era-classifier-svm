@@ -2,7 +2,7 @@
 Identifying artistic periods using classical computer vision.
 
 # Overview
-A web-based image classifier that identifies whether a painting belongs to the **Baroque**, **Medieval**, or **Renaissance** era using **classical computer vision methods** (HOG features + SVM). The model is deployed using **Streamlit**. Users can upload a painting image and instantly see:
+A web-based image classifier that identifies whether a painting belongs to the **Baroque**, **Medieval**, or **Renaissance** era using **classical computer vision methods** (HOG + Color Histogram + SVM). The model is deployed using **Streamlit**. Users can upload a painting image and instantly see:
 - Predicted painting era
 - Confidence score
 - Short description
@@ -10,7 +10,7 @@ A web-based image classifier that identifies whether a painting belongs to the *
 - Confidence bar chart (Altair)
 
 # Features
-- HOG features + SVM
+- HOG & Color Histogram features + SVM
 - Custom styled UI
 - Live prediction and confidence chart
 - Supports JPG / JPEG / PNG
@@ -31,6 +31,12 @@ Trained on 3 classes:
 Preprocessing:
 - Resize to 128×128
 - Convert RGB → grayscale
+- Preserve RGB images for color feature extraction
+
+Data Augmentation:
+- Original image
+- Horizontal flip
+- Brightness adjustment
 
 Feature Extraction:
 Using **HOG (Histogram of Oriented Gradients)** from `skimage.feature.hog`:
@@ -38,6 +44,16 @@ Using **HOG (Histogram of Oriented Gradients)** from `skimage.feature.hog`:
 - `pixels_per_cell=(8, 8)`  
 - `cells_per_block=(2, 2)`  
 - `block_norm="L2-Hys"`
+
+Using **Color Histogram (RGB)** from opencv:
+- 3D RGB histogram
+- histSize = [8, 8, 8]
+- Histogram normalization applied
+
+**Final feature vector**:
+Concatenating HOG features and color histogram features that combines:
+- Shape & texture (HOG)
+- Color & tone (RGB histogram)
 
 Classifier:
 A **Linear SVM** (`sklearn.svm.SVC`) trained with:
